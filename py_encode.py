@@ -41,6 +41,6 @@ for x in fullpath:
     remove_extension = remove_extension.split('.')[0]
     #print(remove_extension)
     cmd = "ffmpeg.exe -hide_banner -hwaccel nvdec -i " + x + " -c:v h264_nvenc -crf 21 -c:a copy " + split(x)[0] + "/converted_" + remove_extension + ".mkv"
-    #print(cmd)
+    print(cmd)
     #Un-comment the below line when you're ready to convert. I've commented it out for now as I'm still making changes.
     #subprocess.call(cmd, shell=True)
