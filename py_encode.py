@@ -14,7 +14,7 @@ from os.path import isfile, join, split
 # just need to ensure files to convert are in a folder called batch in the dir of the python file.
 #mypath = r"E:/iCloudDrive/python_work/batch/"
 #mypath = join("E:/iCloudDrive/python_work/batch/")
-mypath = getcwd() + join("/batch")
+mypath = getcwd() + join("\\batch\\")
 
 # Loops through "mypath" using os.listdir and if any files are found (isfile), the name is placed into list variable "onlyfiles". 
 onlyfiles = [x for x in listdir(mypath) if isfile(join(mypath, x))]
@@ -40,7 +40,10 @@ for x in fullpath:
     remove_extension = split(x)[1]
     remove_extension = remove_extension.split('.')[0]
     #print(remove_extension)
-    cmd = "ffmpeg.exe -hide_banner -hwaccel nvdec -i " + x + " -c:v h264_nvenc -crf 21 -c:a copy " + split(x)[0] + "/converted_" + remove_extension + ".mkv"
+    cmd = "ffmpeg.exe -hide_banner -hwaccel nvdec -i " + x + " -c:v h264_nvenc -crf 21 -c:a copy " + split(x)[0] + "\\converted_" + remove_extension + ".mkv"
     print(cmd)
     #Un-comment the below line when you're ready to convert. I've commented it out for now as I'm still making changes.
+    #Use subprocess.call if you want to convert one by one.
+    #Use subprocess.Popen if you want to convert everything at once.
     #subprocess.call(cmd, shell=True)
+    #subprocess.Popen(cmd, shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
