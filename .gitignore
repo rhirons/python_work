@@ -102,3 +102,4 @@ ENV/
 
 batch/
 .vscode/
+nessus_vulns2xlsx\.pl
