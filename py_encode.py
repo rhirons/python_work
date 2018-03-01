@@ -33,7 +33,7 @@ which_os = platform.system()
 print("OS Detected is: " + which_os + "\n")
 
 # Asks user if they want to convert sequentially or in parallel. Will be used in the if statement later on
-user_choice = raw_input("Do you want to convert one at a time? Y/N: ")
+user_choice = raw_input("Do you want to convert one video at a time? Y/N: ")
 user_choice = user_choice.upper()
 #print (user_choice)
 
