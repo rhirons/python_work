@@ -17,31 +17,49 @@ from os.path import isfile, join, split
 # just need to ensure files to convert are in a folder called batch in the dir of the python file.
 #userpath = r"E:/iCloudDrive/python_work/batch/"
 #userpath = join("E:/iCloudDrive/python_work/batch/")
-userpath = getcwd() + "\\batch\\"
+which_os = platform.system()
+filename = []
+if which_os == "Windows":
+    userpath = getcwd() + "\\batch\\"
+else:
+    userpath = getcwd() + "/batch/"
+
 
 # Loops through "userpath" using os.listdir and if any files are found (isfile), the name is placed into list variable "filename". 
-filename = []
 filename = [x for x in listdir(userpath) if isfile(join(userpath, x))]
 
-# Add full dir path (userpath) to file name (filename) into it's own list (fullpath)
+# Combine path (userpath) to file name (filename) into a list (fullpath)
 fullpath = []
 for f in filename:
     fullpath.append(userpath + f)
 
-#Determines which OS user is running.
-which_os = platform.system()
-print("OS Detected is: " + which_os + "\n")
+#Prints which OS user is running using platform.system()
+if which_os == "Windows":
+    print("\nOS Type is: " + which_os + " - Nvidia GPU encoding & decoding will be used\n")
+else:
+    print("\nOS Type is: " + which_os + " - CPU encoding & decoding will be used\n")
 
-# Asks user if they want to convert sequentially or in parallel. Will be used in the if statement later on
+
+if len(fullpath) == 0:
+    print ("There are no files in the batch folder. Nothing to do. Quitting....")
+    exit()
+
+# Asks user if they want to convert sequentially or in parallel. 
+# Will determine the subprocess command further down
+print ("Encoding multiple files is ONLY recomendeded when using the GPU") 
 user_choice = raw_input("Do you want to convert one video at a time? Y/N: ")
 user_choice = user_choice.upper()
-#print (user_choice)
+
+if user_choice != "Y" and user_choice != "N":
+    print("Choice is Y or N! Quitting...\n")
+    exit()
 
 print ("\n" + "=====================")
 print ("Files to convert are:")
 print ("=====================")
 
 # This shows the user the list of files that will be converted. 
+print(len(fullpath))
 for f in filename:
     print (f)
 print ("\n")
@@ -52,8 +70,13 @@ print ("\n")
 for x in fullpath:
     remove_extension = split(x)[1]
     remove_extension = remove_extension.split('.')[0]
-    cmd = "ffmpeg.exe -hide_banner -hwaccel nvdec -i " + x + " -c:v h264_nvenc -crf 22 -c:a copy " + split(x)[0] + "\\converted_" + remove_extension + ".mkv"
-    print(cmd)
+    cmd = "ffmpeg.exe -hide_banner -hwaccel nvdec -i " + x + " -c:v h264_nvenc -preset:v slow -profile:v high -level:v 5.1 -tier:v main -cbr 0 -b:v 3.5M -maxrate:v 5M -minrate:v 3K -c:a copy " + split(x)[0]
+    if which_os == "Windows":
+        cmd = cmd + "\\converted_" + remove_extension + ".mkv"
+    else:
+        cmd = cmd + "/converted_" + remove_extension + ".mkv"
+
+    print(cmd + "\n")
     
     #Un-comment the below line when you're ready to convert. I've commented it out for now as I'm still making changes.
     #Use subprocess.call if you want to convert one by one.
