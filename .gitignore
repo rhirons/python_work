@@ -103,3 +103,11 @@ ENV/
 batch/
 .vscode/
 nessus_vulns2xlsx\.pl
+
+ip_backup
+
+ip_backup_clean
+
+route_backup
+
+route_backup_clean

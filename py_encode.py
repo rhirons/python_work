@@ -14,9 +14,7 @@ from os.path import isfile, join, split
 # Can use raw string to hold the dir path or use os.path.join to normalise input. 
 # Forward slashes work in windows and works across Osx/linux.
 # Decided to user getcwd so you don't need to replace the path for every system..
-# just need to ensure files to convert are in a folder called batch in the dir of the python file.
-#userpath = r"E:/iCloudDrive/python_work/batch/"
-#userpath = join("E:/iCloudDrive/python_work/batch/")
+# just need to ensure files to convert are in a folder called batch in the same dir of the python script.
 which_os = platform.system()
 filename = []
 if which_os == "Windows":
@@ -24,11 +22,11 @@ if which_os == "Windows":
 else:
     userpath = getcwd() + "/batch/"
 
-
-# Loops through "userpath" using os.listdir and if any files are found (isfile), the name is placed into list variable "filename". 
+# Loops through "userpath" using os.listdir and if any files are found (isfile), the name is placed into list "filename". 
 filename = [x for x in listdir(userpath) if isfile(join(userpath, x))]
-
-# Combine path (userpath) to file name (filename) into a list (fullpath)
+#This replaces any spaces in the filename with underscores
+filename = [x.replace(' ', '_') for x in filename]
+# Combine path (userpath) to file name (filename) into a newlist (fullpath)
 fullpath = []
 for f in filename:
     fullpath.append(userpath + f)
@@ -39,8 +37,7 @@ if which_os == "Windows":
 else:
     print("\nOS Type is: " + which_os + " - CPU encoding & decoding will be used\n")
 
-
-if len(fullpath) == 0:
+if len(fullpath) <= 0:
     print ("There are no files in the batch folder. Nothing to do. Quitting....")
     exit()
 
@@ -59,7 +56,7 @@ print ("Files to convert are:")
 print ("=====================")
 
 # This shows the user the list of files that will be converted. 
-print(len(fullpath))
+print("Number of files: " + str(len(fullpath)))
 for f in filename:
     print (f)
 print ("\n")
@@ -78,8 +75,8 @@ for x in fullpath:
 
     print(cmd + "\n")
     
-    #Un-comment the below line when you're ready to convert. I've commented it out for now as I'm still making changes.
+    #Un-comment one of the below lines when you're ready to convert.
     #Use subprocess.call if you want to convert one by one.
     #Use subprocess.Popen if you want to convert everything at once.
     #subprocess.call(cmd, shell=True)
-    #subprocess.Popen(cmd, shell=True,stdin=None, stdout=None, stderr=Noyne, close_fds=True)
+    #subprocess.Popen(cmd, shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
