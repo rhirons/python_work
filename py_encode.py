@@ -1,5 +1,5 @@
 # Simple script to batch convert video files in ffmpeg using Nvidia hardware decoding & encoding.
-# Script will process all video files found in a folder called batch in the current directory
+# Script will search and process video files found in a folder called batch in the directory 
 # of the python script.
 
 # Video will be converted to h264 mkv file. Change to suit your needs.
@@ -8,7 +8,7 @@
 from __future__ import print_function
 import subprocess
 import platform
-from os import getcwd, listdir
+from os import getcwd, listdir, rename
 from os.path import isfile, join, split
 
 # Can use raw string to hold the dir path or use os.path.join to normalise input. 
@@ -17,19 +17,24 @@ from os.path import isfile, join, split
 # just need to ensure files to convert are in a folder called batch in the same dir of the python script.
 which_os = platform.system()
 filename = []
+fullpath = []
 if which_os == "Windows":
     userpath = getcwd() + "\\batch\\"
 else:
     userpath = getcwd() + "/batch/"
 
-# Loops through "userpath" using os.listdir and if any files are found (isfile), the name is placed into list "filename". 
+# Loops through "userpath" using os.listdir and if any files are found (isfile), the name is placed into list "filename"
 filename = [x for x in listdir(userpath) if isfile(join(userpath, x))]
-#This replaces any spaces in the filename with underscores
-filename = [x.replace(' ', '_') for x in filename]
+
 # Combine path (userpath) to file name (filename) into a newlist (fullpath)
-fullpath = []
 for f in filename:
     fullpath.append(userpath + f)
+#Renames the files in the batch folder to remove any spaces in the filename
+for f in fullpath:
+    rename(f,f.replace(' ', '_').lower())
+
+#Re-runs the original command to get an updated list of files that may have been renamed
+filename = [x for x in listdir(userpath) if isfile(join(userpath, x))]
 
 #Prints which OS user is running using platform.system()
 if which_os == "Windows":
