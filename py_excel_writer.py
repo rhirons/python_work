@@ -1,6 +1,7 @@
 from __future__ import print_function
 import xlsxwriter
 import xml.dom
+import xml.etree
 import sys
 
 if len(sys.argv) < 2:
@@ -24,7 +25,7 @@ input_file = sys.argv[1]
 output_file = sys.argv[2]
 #print ("The arguments are: " + str(sys.argv))
 
-workbook = xlsxwriter.Workbook('hello.xlsx')
+workbook = xlsxwriter.Workbook(output_file)
 worksheet = workbook.add_worksheet()
 
 
