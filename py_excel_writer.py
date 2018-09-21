@@ -26,7 +26,10 @@ output_file = sys.argv[2]
 #print ("The arguments are: " + str(sys.argv))
 
 workbook = xlsxwriter.Workbook(output_file)
-worksheet = workbook.add_worksheet()
+worksheet = workbook.add_worksheet();
+
+
+
 
 
 #worksheet.write('A1', 'Hello world')
